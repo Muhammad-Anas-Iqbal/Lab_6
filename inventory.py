@@ -16,25 +16,20 @@ data = {
 
 df = pd.DataFrame(data)
 
-# (a) Clean Category names
 df["Category"] = df["Category"].str.strip().str.title()
 
-# (b) Convert Price to numeric
 df["Price"] = df["Price"].str.replace("Rs. ", "", regex=False)
 df["Price"] = df["Price"].str.replace(",", "", regex=False)
 df["Price"] = pd.to_numeric(df["Price"])
 
-# (c) Apply label encoding
 df["Category_Code"] = df["Category"].astype("category").cat.codes
 
 print("Cleaned Inventory DataFrame:")
 print(df)
 
-# Calculate average price and total stock per category
 avg_price = df.groupby("Category")["Price"].mean()
 total_stock = df.groupby("Category")["Stock"].sum()
 
-# (d) Draw both plots side by side
 fig, ax = plt.subplots(1, 2, figsize=(12, 5))
 
 avg_price.plot(kind="bar", ax=ax[0], title="Average Price per Category")
